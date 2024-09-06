@@ -17,6 +17,19 @@
           <h2>
             <p id="ip-address"></p>
             <script>
+              document.addEventListener("DOMContentLoaded", function() {
+                  // Fetch the IP address from the API
+                  fetch("https://api.ipify.org?format=json")
+                      .then(response => response.json())
+                      .then(data => {
+                          // Display the IP address on the screen
+                          document.getElementById("ip-address").textContent = data.ip;
+                      })
+                      .catch(error => {
+                          console.error("Error fetching IP address:", error);
+                      });
+                      //HSE IP: 209.160.198.202
+              });
           </script>
           </h2>
           <div>
