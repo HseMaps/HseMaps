@@ -17,7 +17,7 @@
         </h1>
           <h2>"Your current IP Address: " <span id="current-ip"></span>
               <script>
-               let userIP = '';
+               var userIP;
                document.addEventListener("DOMContentLoaded", function() {
                    // Fetch the IP address from the API
                    fetch("https://api.ipify.org?format=json")
@@ -26,6 +26,7 @@
                             // Display the IP address on the screen
                             userIP = data.ip;
                             // document.getElementById("ip-address").textContent = data.ip;
+                            document.getElementById("current-ip").textContent = userIP;
                        })
                         .catch(error => {
                             console.error("Error fetching IP address:", error);
@@ -33,7 +34,7 @@
                         //HSE IP: 209.160.198.202
                 });
                 console.log(userIP);
-                document.getElementById("current-ip").textContent = userIP;
+                
              </script>
              
           </h2>
