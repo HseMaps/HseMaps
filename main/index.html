@@ -15,9 +15,11 @@
             </div>
           </div>
         </h1>
-          <h2>"Your current IP Address: " <span id="current-ip"></span>
+          <h2>Your current IP Address:  <span id="current-ip"></span>
+              Approved?  <span id="approved"></span>
               <script>
                var userIP;
+               let allowed = false;
                document.addEventListener("DOMContentLoaded", function() {
                    // Fetch the IP address from the API
                    fetch("https://api.ipify.org?format=json")
@@ -27,14 +29,24 @@
                             userIP = data.ip;
                             // document.getElementById("ip-address").textContent = data.ip;
                             document.getElementById("current-ip").textContent = userIP;
+                            console.log(userIP);
+                            if(userIP === '209.160.198.202') {
+                              allowed = true;
+                            } else {
+                              allowed = false;
+                            }
+                           document.getElementById("approved").textContent = allowed;
+
                        })
                         .catch(error => {
                             console.error("Error fetching IP address:", error);
                         });
                         //HSE IP: 209.160.198.202
+
                 });
-                console.log(userIP);
-                
+
+
+
              </script>
              
           </h2>
