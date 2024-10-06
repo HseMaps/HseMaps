@@ -30,15 +30,29 @@ document.addEventListener("DOMContentLoaded", function() {
          console.log(allowed);
  });
 
-// Usage
-let adjMatrix = [];
-fetchJSON('elements/AdjacencyMatrix.json').then(data => {
-    adjMatrix=data; // Process your JSON data here
+
+let distMatrix = [];
+fetchJSON('elements/DistanceMatrix.json').then(data => {
+    distMatrix=data;
+});
+let nextMatrix = [];
+fetchJSON('elements/PrecomputedPaths.json').then(data => {
+    nextMatrix=data;
+});
+let rooms = [];
+fetchJSON('elements/SLAVEWORK.json').then(data => {
+    rooms=flipKeyValuePairWithMultiNodes(data);
 });
 
 function markShortestPath(start,end){
-    let path = aStar(adjMatrix,start,end);
+    refresh();
+    let path = minPathBtwRooms(nextMatrix,distMatrix,start,end,rooms);
     for (let i = 0; i < path.length - 1; i++) {
-        colorLine(path[i],path[i+1]);
+        selectLine(path[i],path[i+1]);
     }
+}
+function markShortestPathFromInput(){
+    let start = document.getElementById("start").value;
+    let end = document.getElementById("end").value;
+    markShortestPath(start,end);
 }
