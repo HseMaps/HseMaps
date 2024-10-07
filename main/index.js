@@ -1,5 +1,3 @@
-// Description: This file contains the IP-Grabber function and any 
-// functions relating to Determining the IP of the user
 
 let userIP;
 let allowed = false;
