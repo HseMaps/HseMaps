@@ -1,3 +1,13 @@
 body {
-
+.selected {
+  stroke: #F0D543;
 }
+}
+#svgdiv {
+    width:0;
+  }
+  svg {
+    height: 100%;
+    width: 96vmin;
+  }
+    
