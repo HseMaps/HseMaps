@@ -1,5 +1,5 @@
 function constructPath(nextMatrix,u, v) {
-    if (nextMatrix[u][v] === null) return [];
+    if (nextMatrix[u][v] == null) return [];
     const path = [];
     let current = u;
     while (current != v) {
