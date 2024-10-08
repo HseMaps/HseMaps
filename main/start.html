@@ -17,7 +17,7 @@
                   .then(data => {
                     console.log(data.ip);
                     if(data.ip === '209.160.198.202') {
-                      window.location.href = "index.html";
+                      // window.location.href = "index.html";
                       console.log("Access Granted");
                     }else{
                       console.log("Access Denied");
@@ -27,5 +27,8 @@
                 }, 500);
             </script>
          </h1>
+         <input type="text" id="email">
+         <button onclick="checkEmail()">Email</button>
     </body>
+    <script src="start.js"></script>
  </html>
