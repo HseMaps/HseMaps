@@ -45,9 +45,7 @@ fetchJSON('elements/SLAVEWORK.json').then(data => {
 function markShortestPath(start,end){
     refresh();
     let path = minPathBtwRooms(nextMatrix,distMatrix,start,end,rooms);
-    for (let i = 0; i < path.length - 1; i++) {
-        selectLine(path[i],path[i+1]);
-    }
+    selectPath(path);  
 }
 function markShortestPathFromInput(){
     let start = document.getElementById("start").value;
