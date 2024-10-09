@@ -40,11 +40,15 @@ let rooms = [];
 fetchJSON('elements/SLAVEWORK.json').then(data => {
     rooms=flipKeyValuePairWithMultiNodes(data);
 });
+let verts = [];
+fetchJSON('elements/Vertices.json').then(data => {
+    verts=data;
+});
 
 function markShortestPath(start,end){
     refresh();
     let path = minPathBtwRooms(nextMatrix,distMatrix,start,end,rooms);
-    selectPath(path);  
+    selectPath(path,verts);  
 }
 function markShortestPathFromInput(){
     let start = document.getElementById("start").value;
