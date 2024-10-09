@@ -15,13 +15,13 @@
 }
 
 #startpt {
-  fill: #FF0000;
+  fill: #00FF00;
   stroke: #01539C;
   stroke-width: 0.2em;
 }
 
 #endpt {
-  fill: #00FF00;
+  fill: #FF0000;
   stroke: #01539C;
   stroke-width: 0.2em;
 }
