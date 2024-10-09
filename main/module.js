@@ -39,46 +39,44 @@ function minPathBtwRooms(nextMatrix, distMatrix, startRoom, endRoom, rooms) {
     return constructPath(nextMatrix, bestStartNode, bestEndNode);
 }
 
-function createLine(a,b,graph=document.querySelector("svg > g > g"),color="#01539C"){
-    if(Number(b.mainText)>Number(a.mainText)){
-        let temp = a;
-        a = b;
-        b = temp;
-    }
-	graph.insertAdjacentHTML("afterbegin",'<path xmlns="http://www.w3.org/2000/svg" fill="none" stroke="'+color+'" paint-order="fill stroke markers" d=" M '+a.position.x+' '+a.position.y+' L '+b.position.x+' '+b.position.y+'" stroke-miterlimit="10" stroke-width="4" id="'+a.mainText+' '+b.mainText+'"/>');
+function createLine(points,graph=document.querySelector("svg > g > g")){
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    path.setAttribute("points", points);
+    path.classList.add('line');
+    path.classList.add('gen');
+	graph.insertAdjacentElement("beforeend", path);
+    return path;
 }
 
-function selectPath(path) {
-    for (let i = 0; i < path.length - 1; i++) {
-        let aID = path[i];
-        let bID = path[i + 1];
 
-        if (bID > aID) [aID, bID] = [bID, aID];
-
-        const element = document.getElementById(aID + ' ' + bID);
-        element.classList.add("selected");
-
-        if (i === 0) document.querySelector("svg > g > g").insertAdjacentHTML("beforeend",'<circle cx="'+element.x1.baseVal.value+'" cy="'+element.y1.baseVal.value+'" r="10" id="startpt"/>');
-        else if (i === path.length - 2) document.querySelector("svg > g > g").insertAdjacentHTML("beforeend",'<circle cx="'+element.x2.baseVal.value+'" cy="'+element.y2.baseVal.value+'" r="10" id="endpt"/>');
+function selectPath(path,verts,graph=document.querySelector("svg > g > g"),svg=document.querySelector("svg")){ 
+    let points = [];
+    for (let i = 0; i < path.length; i++) {
+        points.push(verts[path[i]].x + "," + verts[path[i]].y);
     }
+    let line = createLine(points,graph);
+    line.classList.add("selected");
+    const startpt = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    startpt.cx.baseVal.value = verts[path[0]].x;
+    startpt.cy.baseVal.value = verts[path[0]].y;
+    startpt.r.baseVal.value = '10';
+    startpt.classList.add('gen');
+    startpt.id = 'startpt';
+    graph.insertAdjacentElement("beforeend", startpt);
+
+    const endpt = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    endpt.cx.baseVal.value = verts[path[path.length-1]].x;
+    endpt.cy.baseVal.value = verts[path[path.length-1]].y;
+    endpt.r.baseVal.value = '10';
+    endpt.classList.add('gen');
+    endpt.id = 'endpt';
+    graph.insertAdjacentElement("beforeend", endpt);
 }
 
-function deselectLine(aID,bID){
-    if(bID>aID){
-        let temp = aID;
-        aID = bID;
-        bID = temp;
-    }
-    document.getElementById(aID+' '+bID).classList.remove("selected");
-}
 function refresh(){
-    let selected = document.getElementsByClassName("selected");
-    if(selected.length){
-        document.getElementById("startpt").remove();
-        document.getElementById("endpt").remove();
-    }
+    let selected = document.getElementsByClassName("gen");
     for(let i=0;i<selected.length;i++){
-        selected[i].classList.remove("selected");
+        selected[i].remove();
         i--;
     }
 }

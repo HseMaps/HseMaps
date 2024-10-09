@@ -1,6 +1,7 @@
 .line {
   stroke: #808080;
   stroke-width: 4;
+  fill: none;
 }
 .selected {
   stroke: #007eef;
