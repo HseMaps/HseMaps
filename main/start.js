@@ -15,7 +15,7 @@ function checkEmail() {
 };
 function emailValid(email) {
     email.toLowerCase();
-    if(email === "hsestudents.org") {
+    if(email === "hsestudents.org" || email === "hse.k12.in.us") {
         console.log("HSE email");
         setTimeout(function(){
             fetch("https://api.ipify.org?format=json")
@@ -26,6 +26,7 @@ function emailValid(email) {
                 window.location.href = "index.html";
                 console.log("Access Granted");
               }else{
+                window.location.href = "error.html";
                 console.log("Access Denied");
               }
             });
