@@ -1,5 +1,13 @@
+//Login Function
+function checkLogin() {
+     if(checkEmail() && checkIP() && checkPassword()){
+        window.location.href = "index.html";
+        console.log('redirected');
+     };
+};
+
+//Function to validate Email
 function checkEmail() {
-    console.log(emails);
     var email = document.getElementById("email").value;
     let source;
     let valid = false;
@@ -11,23 +19,47 @@ function checkEmail() {
             break;
         } 
      }
-     if(emailValid(source) && checkIP()){
-        window.location.href = "index.html";
-        console.log('redirected');
-     };
-     console.log(valid);
-};
-function emailValid(email) {
-    email.toLowerCase();
+     source.toLowerCase();
     for(let j = 0; j < emails.length; j++) {
-        if(email === emails[j]){
+        if(source === emails[j]){
             console.log("HSE email");
             return true
-            break;
         } 
     };
     console.log("Not HSE email");
     return false;
+}
+
+
+//Function to validate password
+function checkPassword() {
+    var password = document.getElementById("password").value;
+    let valid = false;
+    for(let i = 0; i < passwords.length; i++){
+        if(password === passwords[i]){
+            valid = true;
+            break;
+        }
+    }
+    return valid;
+};
+
+
+//Function to validate IP address
+function checkIP() {
+    if(ip === "209.160.198.202") {
+        return true;
+    }
+    return false;
+};
+
+
+//Function connected to retry button which redirects to log.html if IP address is correct
+function retry() {
+  if(checkIP()){
+    console.log('true redirect');
+    window.location.href = "log.html";
+  }
 };
 
 let emails = [];
@@ -43,15 +75,3 @@ let ip;
 fetchJSON("https://api.ipify.org?format=json").then(data => {
     ip = data.ip;
 });
-function checkIP() {
-    if(ip === "209.160.198.202") {
-        return true;
-    }
-    return false;
-};
-function retry() {
-  if(checkIP()){
-    console.log('true redirect');
-    window.location.href = "log.html";
-  }
-};
