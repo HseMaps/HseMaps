@@ -53,5 +53,7 @@ function markShortestPath(start,end){
 function markShortestPathFromInput(){
     let start = document.getElementById("start").value;
     let end = document.getElementById("end").value;
+    start = start.toUpperCase();
+    end = end.toUpperCase();
     markShortestPath(start,end);
 }

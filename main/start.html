@@ -7,9 +7,17 @@
         <title>HseMapsDenied</title>
     </head>
     <body>
-         <h1>ACCESS DENIED</h1>
+      <h1>
+        <div id="Title" style="text-align: left">
+          <div style="font-family: 'Arial', Courier, monospace;"> 
+            <img style="vertical-align:middle" src="elements/hseapps.0051872e.png" alt="HseAPPS Logo" width="40" height="40"/>
+            <span style="vertical-align:middle">HSE MAPS</span>
+          </div>
+        </div>
+      </h1>
+         <h2>ACCESS DENIED</h2>
          <p>Please connect to the HSE Wifi to proceed</p>
-         <h1>
+         <h3>
             <script>
                 setTimeout(function(){
                   fetch("https://api.ipify.org?format=json")
@@ -17,15 +25,15 @@
                   .then(data => {
                     console.log(data.ip);
                     if(data.ip === '209.160.198.202') {
-                      window.location.href = "index.html";
+                      window.location.href = "log.html";
                       console.log("Access Granted");
                     }else{
                       console.log("Access Denied");
                     }
                   });
 
-                }, 5000);
+                }, 500);
             </script>
-         </h1>
+         </h3>
     </body>
  </html>
