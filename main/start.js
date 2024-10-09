@@ -1,4 +1,5 @@
 function checkEmail() {
+    console.log(emails);
     var email = document.getElementById("email").value;
     let source;
     let valid = false;
@@ -7,32 +8,50 @@ function checkEmail() {
             source = email.substring(i+1);
             console.log(source);
             valid = true;
-            emailValid(source);
             break;
         } 
      }
+     if(emailValid(source) && checkIP()){
+        window.location.href = "index.html";
+        console.log('redirected');
+     };
      console.log(valid);
 };
 function emailValid(email) {
     email.toLowerCase();
-    if(email === "hsestudents.org" || email === "hse.k12.in.us") {
-        console.log("HSE email");
-        setTimeout(function(){
-            fetch("https://api.ipify.org?format=json")
-            .then(response => response.json()) 
-            .then(data => {
-              console.log(data.ip);
-              if(data.ip === '209.160.198.202') {
-                window.location.href = "index.html";
-                console.log("Access Granted");
-              }else{
-                window.location.href = "error.html";
-                console.log("Access Denied");
-              }
-            });
+    for(let j = 0; j < emails.length; j++) {
+        if(email === emails[j]){
+            console.log("HSE email");
+            return true
+            break;
+        } 
+    };
+    console.log("Not HSE email");
+    return false;
+};
 
-          }, 500);
-    } else {
-        console.log("Not HSE email");
+let emails = [];
+fetchJSON('elements/ValidEmails.json').then(data => {
+    emails = data;
+});
+let passwords = [];
+fetchJSON('elements/ValidPasswords.json').then(data => {
+  passwords = data;
+});
+
+let ip;
+fetchJSON("https://api.ipify.org?format=json").then(data => {
+    ip = data.ip;
+});
+function checkIP() {
+    if(ip === "209.160.198.202") {
+        return true;
     }
+    return false;
+};
+function retry() {
+  if(checkIP()){
+    console.log('true redirect');
+    window.location.href = "log.html";
+  }
 };
