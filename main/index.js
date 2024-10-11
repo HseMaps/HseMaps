@@ -48,12 +48,16 @@ fetchJSON('elements/Vertices.json').then(data => {
 function markShortestPath(start,end){
     refresh();
     let path = minPathBtwRooms(nextMatrix,distMatrix,start,end,rooms);
-    selectPath(path,verts);  
+    selectPath(path,verts,document.querySelector("#graph"));
 }
-function markShortestPathFromInput(){
+function markShortestPathFromInput(zoom=false){
     let start = document.getElementById("start").value;
     let end = document.getElementById("end").value;
     start = start.toUpperCase();
     end = end.toUpperCase();
     markShortestPath(start,end);
+    if(zoom){
+        let element = document.getElementById("graph");
+        focus(element);
+    }
 }

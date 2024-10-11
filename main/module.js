@@ -49,7 +49,7 @@ function createLine(points,graph=document.querySelector("svg > g > g")){
 }
 
 
-function selectPath(path,verts,graph=document.querySelector("svg > g > g"),svg=document.querySelector("svg")){ 
+function selectPath(path,verts,graph=document.querySelector("svg > g > g")){ 
     let points = [];
     for (let i = 0; i < path.length; i++) {
         points.push(verts[path[i]].x + "," + verts[path[i]].y);
@@ -79,6 +79,15 @@ function refresh(){
         selected[i].remove();
         i--;
     }
+}
+
+function focus(element,margin=5,svg=document.querySelector("#svgdiv > svg")){
+    let map = svg.viewBox.baseVal;
+    let focus = element.getBBox();
+    map.x = 1308 - focus.y - focus.height - margin/2;
+    map.y = focus.x - margin/2;
+    map.width = focus.height + margin;
+    map.height = focus.width + margin;
 }
 
 async function fetchJSON(url) {
