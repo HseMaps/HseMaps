@@ -7,6 +7,8 @@
   stroke: #808080;
   stroke-width: 4;
   fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .selected {
@@ -31,8 +33,8 @@
 }
 
 svg {
-  height: 100%;
-  width: 96vmin;
+  max-height: 200vh;
+  max-width: 96vmin;
   display: block;
   margin: auto;
 }
@@ -40,11 +42,11 @@ svg {
 #inputdiv {
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-bottom: 1em;
+  flex-wrap: wrap;
+  gap: 1em;
 }
 
 #inputdiv input {
   padding: 0.25em;
-  margin-right: 1em;
 }
