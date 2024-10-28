@@ -58,6 +58,6 @@ function markShortestPathFromInput(zoom=false){
     markShortestPath(start,end);
     if(zoom){
         let element = document.getElementById("graph");
-        focus(element);
+        focus(element, 100);
     }
 }

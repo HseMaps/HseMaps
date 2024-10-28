@@ -55,6 +55,12 @@ function selectPath(path,verts,graph=document.querySelector("svg > g > g")){
         points.push(verts[path[i]].x + "," + verts[path[i]].y);
     }
     let line = createLine(points,graph);
+
+    // Create a mask for the selected path
+    let maskLine = createLine(points,document.querySelector("svg > g > g > mask"));
+    maskLine.classList.add("maskedselected");
+    graph.insertAdjacentElement("beforeend", mask);
+
     line.classList.add("selected");
     const startpt = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     startpt.cx.baseVal.value = verts[path[0]].x;
