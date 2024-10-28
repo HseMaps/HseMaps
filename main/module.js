@@ -105,10 +105,10 @@ function updateAgent(follow=false,margin=300){
     let slider = document.getElementById("progbar");
     let path = document.querySelector("#graph > polyline");
     let svg = document.getElementById("svgdiv").children[0];
-    let point = path.getPointAtLength(slider.value/100*path.getTotalLength());
+    let point = path.getPointAtLength(slider.value/slider.max*path.getTotalLength());
     agent.cx.baseVal.value = point.x;
     agent.cy.baseVal.value = point.y;
-    let nxtpt = path.getPointAtLength((slider.value/100+0.0001)*path.getTotalLength());
+    let nxtpt = path.getPointAtLength((slider.value/slider.max+0.0001)*path.getTotalLength());
     if(follow){
         focus(agent,margin);
     }
@@ -118,6 +118,7 @@ function updateAgent(follow=false,margin=300){
     let orientation= 180-Math.atan2(nxtpt.y-point.y,nxtpt.x-point.x)*180/Math.PI;
     svg.setAttribute("style","transform-origin:"+point.x+","+point.y);
     svg.setAttribute("style","transform: rotate("+orientation+"deg)");
+    
 }
 }
 
