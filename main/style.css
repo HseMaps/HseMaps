@@ -27,6 +27,11 @@
   stroke: #01539C;
   stroke-width: 0.2em;
 }
+#agent {
+  fill: #FFA500;
+  stroke: #01539C;
+  stroke-width: 0.2em;
+}
 
 #svgdiv {
   width: 100%;

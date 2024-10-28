@@ -57,7 +57,7 @@ function markShortestPathFromInput(zoom=false){
     end = end.toUpperCase();
     markShortestPath(start,end);
     if(zoom){
-        let element = document.getElementById("graph");
-        focus(element);
+        let element = document.getElementById("agent");
+        focus(element,300);
     }
 }
