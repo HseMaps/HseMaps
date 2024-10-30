@@ -16,6 +16,11 @@
   stroke-width: 8;
 }
 
+.maskedselected {
+  stroke-width: 100;
+  stroke: white;
+}
+
 #startpt {
   fill: #00FF00;
   stroke: #01539C;
@@ -24,6 +29,11 @@
 
 #endpt {
   fill: #FF0000;
+  stroke: #01539C;
+  stroke-width: 0.2em;
+}
+#agent {
+  fill: #FFA500;
   stroke: #01539C;
   stroke-width: 0.2em;
 }
