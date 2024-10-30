@@ -24,7 +24,13 @@
             Email
         <input type="text" id="email">
         </h3>
-
+          <script>
+            document.addEventListener("DOMContentLoaded", function() {
+              if(!checkIP()) {
+                windows.location.href = "start.html";
+              }
+            });
+          </script>
         <h3>
             Password
         <input type="password" id="password">
