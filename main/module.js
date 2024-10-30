@@ -102,24 +102,38 @@ function focus(element,margin=5,svg=document.querySelector("#svgdiv > svg")){
 function updateAgent(follow=false,margin=300){
     let agent = document.getElementById("agent");
     if(agent){
-    let slider = document.getElementById("progbar");
-    let path = document.querySelector("#graph > polyline");
-    let svg = document.getElementById("svgdiv").children[0];
-    let point = path.getPointAtLength(slider.value/slider.max*path.getTotalLength());
-    agent.cx.baseVal.value = point.x;
-    agent.cy.baseVal.value = point.y;
-    let nxtpt = path.getPointAtLength((slider.value/slider.max+0.0001)*path.getTotalLength());
-    if(follow){
-        focus(agent,margin);
+        let slider = document.getElementById("progbar");
+        let path = document.querySelector("#graph > polyline");
+        let svg = document.getElementById("svgdiv").children[0];
+        let point = path.getPointAtLength(slider.value/slider.max*path.getTotalLength());
+        agent.cx.baseVal.value = point.x;
+        agent.cy.baseVal.value = point.y;
+        let nxtpt = path.getPointAtLength((slider.value/slider.max+0.0001)*path.getTotalLength());
+        if(follow){
+            focus(agent,margin);
+        }
+        if(nxtpt.x==point.x && nxtpt.y==point.y){
+            return;
+        }
+        let orientation= 180-Math.atan2(nxtpt.y-point.y,nxtpt.x-point.x)*180/Math.PI;
+        svg.setAttribute("style","transform-origin:"+point.x+","+point.y);
+        svg.setAttribute("style","transform: rotate("+orientation+"deg)");
+
+        // Adjust the color of the agent based on the progress
+        let slidercompletion = slider.value/slider.max;
+        let color = [255, 0, 0];
+        if(color[1] < 255) {
+            color[1] = Math.floor(slidercompletion*510);
+        }
+        if(color[1] >= 250 && color[0] >= 0) {
+            color[1] = 255;
+            color[0] = 255 - Math.floor((slidercompletion-0.5)*510);
+        }
+        if(slidercompletion >= 0.99) {
+            color = [0, 255, 0];
+        }
+        agent.style.fill = "rgb("+color[0]+","+color[1]+","+color[2]+")";
     }
-    if(nxtpt.x==point.x && nxtpt.y==point.y){
-        return;
-    }
-    let orientation= 180-Math.atan2(nxtpt.y-point.y,nxtpt.x-point.x)*180/Math.PI;
-    svg.setAttribute("style","transform-origin:"+point.x+","+point.y);
-    svg.setAttribute("style","transform: rotate("+orientation+"deg)");
-    
-}
 }
 
 async function fetchJSON(url) {
