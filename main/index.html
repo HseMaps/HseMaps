@@ -18,8 +18,13 @@
         </div>
       </h1>
       <h2>
-        <!-- Your current IP Address:  <span id="current-ip"></span>
-        Approved?  <span id="approved"></span>       -->
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            if(!checkIP()) {
+              windows.location.href = "start.html";
+            }
+          });
+        </script>
       </h2>
 
       <div id="inputdiv">

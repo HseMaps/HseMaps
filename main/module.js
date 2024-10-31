@@ -108,12 +108,13 @@ function updateAgent(follow=false,margin=300){
     let agent = document.getElementById("agent");
     if(agent){
     let slider = document.getElementById("progbar");
+    let slidercompletion = slider.value/slider.max;
     let path = document.querySelector("#graph > polyline");
     let svg = document.getElementById("svgraph");
-    let point = path.getPointAtLength(slider.value/slider.max*path.getTotalLength());
+    let point = path.getPointAtLength(slidercompletion*path.getTotalLength());
     agent.cx.baseVal.value = point.x;
     agent.cy.baseVal.value = point.y;
-    let nxtpt = path.getPointAtLength((slider.value/slider.max+0.0001)*path.getTotalLength());
+    let nxtpt = path.getPointAtLength((slidercompletion+0.0001)*path.getTotalLength());
     if(follow){
         focus(agent,margin);
     }
@@ -122,6 +123,20 @@ function updateAgent(follow=false,margin=300){
     }
     let orientation= 270-(Math.atan2(nxtpt.y-point.y,nxtpt.x-point.x)*180/Math.PI);
     svg.setAttribute("style","transform-origin: "+point.x+"px "+point.y+"px; "+"transform: rotate("+orientation+"deg)");
+
+    // Adjust the color of the agent based on the progress
+    let color = [255, 0, 0];
+    if(color[1] < 255) {
+        color[1] = Math.floor(slidercompletion*510);
+    }
+    if(color[1] >= 250 && color[0] >= 0) {
+        color[1] = 255;
+        color[0] = 255 - Math.floor((slidercompletion-0.5)*510);
+    }
+    if(slidercompletion >= 0.99) {
+        color = [0, 255, 0];
+    }
+    agent.style.fill = "rgb("+color[0]+","+color[1]+","+color[2]+")";
     
 }
 }
