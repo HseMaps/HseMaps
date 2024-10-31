@@ -47,6 +47,7 @@ svg {
   max-width: 96vmin;
   display: block;
   margin: auto;
+  border: #808080 solid 2px;
 }
 
 #inputdiv {
@@ -59,4 +60,18 @@ svg {
 
 #inputdiv input {
   padding: 0.25em;
+}
+
+html{
+  overflow-x: hidden;
+}
+#scroll{
+  overflow: auto;
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+}
+#scroll::-webkit-scrollbar {
+  width: 0px;
 }

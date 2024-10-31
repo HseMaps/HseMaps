@@ -39,7 +39,7 @@ function minPathBtwRooms(nextMatrix, distMatrix, startRoom, endRoom, rooms) {
     return constructPath(nextMatrix, bestStartNode, bestEndNode);
 }
 
-function createLine(points,graph=document.querySelector("svg > g > g")){
+function createLine(points,graph=document.querySelector("svg > g > g > g")){
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
     path.setAttribute("points", points);
     path.classList.add('line');
@@ -49,7 +49,7 @@ function createLine(points,graph=document.querySelector("svg > g > g")){
 }
 
 
-function selectPath(path,verts,graph=document.querySelector("svg > g > g")){ 
+function selectPath(path,verts,graph=document.querySelector("svg > g > g > g")){ 
     let points = [];
     for (let i = 0; i < path.length; i++) {
         points.push(verts[path[i]].x + "," + verts[path[i]].y);
@@ -57,7 +57,7 @@ function selectPath(path,verts,graph=document.querySelector("svg > g > g")){
     let line = createLine(points,graph);
 
     // Create a mask for the selected path
-    let maskLine = createLine(points,document.querySelector("svg > g > g > mask"));
+    let maskLine = createLine(points,document.querySelector("svg > g > g > g > mask"));
     maskLine.classList.add("maskedselected");
     graph.insertAdjacentElement("beforeend", mask);
 
@@ -80,6 +80,7 @@ function selectPath(path,verts,graph=document.querySelector("svg > g > g")){
     endpt.classList.add('gen');
     endpt.id = 'endpt';
     graph.insertAdjacentElement("beforeend", endpt);
+    return line;
 }
 
 function refresh(){
@@ -88,15 +89,19 @@ function refresh(){
         selected[i].remove();
         i--;
     }
+    let slider = document.getElementById("progbar");
+    slider.value=0;
+    let scroll = document.getElementById("scroll");
+    scroll.scrollTo(0,0);
 }
 
-function focus(element,margin=5,svg=document.querySelector("#svgdiv > svg")){
+function focus(element,margin=5,svg=document.getElementById("svg")){
     let map = svg.viewBox.baseVal;
     let focus = element.getBBox();
-    map.x = 1308 - focus.y - focus.height - margin/2;
-    map.y = focus.x - margin/2;
-    map.width = focus.height + margin;
-    map.height = focus.width + margin;
+    map.x = focus.x - margin/2;
+    map.y = focus.y - margin/2;
+    map.width = focus.width + margin;
+    map.height = focus.height + margin;
 }
 
 function updateAgent(follow=false,margin=300){
@@ -104,7 +109,7 @@ function updateAgent(follow=false,margin=300){
     if(agent){
     let slider = document.getElementById("progbar");
     let path = document.querySelector("#graph > polyline");
-    let svg = document.getElementById("svgdiv").children[0];
+    let svg = document.getElementById("svgraph");
     let point = path.getPointAtLength(slider.value/slider.max*path.getTotalLength());
     agent.cx.baseVal.value = point.x;
     agent.cy.baseVal.value = point.y;
@@ -115,9 +120,8 @@ function updateAgent(follow=false,margin=300){
     if(nxtpt.x==point.x && nxtpt.y==point.y){
         return;
     }
-    let orientation= 180-Math.atan2(nxtpt.y-point.y,nxtpt.x-point.x)*180/Math.PI;
-    svg.setAttribute("style","transform-origin:"+point.x+","+point.y);
-    svg.setAttribute("style","transform: rotate("+orientation+"deg)");
+    let orientation= 270-(Math.atan2(nxtpt.y-point.y,nxtpt.x-point.x)*180/Math.PI);
+    svg.setAttribute("style","transform-origin: "+point.x+"px "+point.y+"px; "+"transform: rotate("+orientation+"deg)");
     
 }
 }
