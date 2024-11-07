@@ -75,3 +75,8 @@ html{
 #scroll::-webkit-scrollbar {
   width: 0px;
 }
+#stairwell {
+  fill: #FFFF00;
+  stroke: #808080;
+  stroke-width: 0.2em;
+}

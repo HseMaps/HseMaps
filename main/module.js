@@ -1,3 +1,6 @@
+this.onPathEnd = function(){};
+this.onPathStart = function(){};
+
 function constructPath(nextMatrix,u, v) {
     if (nextMatrix[u][v] == null) return [];
     const path = [];
@@ -49,7 +52,7 @@ function createLine(points,graph=document.querySelector("svg > g > g > g")){
 }
 
 
-function selectPath(path,verts,graph=document.querySelector("svg > g > g > g")){ 
+function selectPath(path,verts,start="startpt",end="endpt",graph=document.getElementById("graph")){ 
     let points = [];
     for (let i = 0; i < path.length; i++) {
         points.push(verts[path[i]].x + "," + verts[path[i]].y);
@@ -68,7 +71,7 @@ function selectPath(path,verts,graph=document.querySelector("svg > g > g > g")){
     startpt.r.baseVal.value = '10';
     startpt.classList.add('gen');
     const agent = startpt.cloneNode(true);
-    startpt.id = 'startpt';
+    startpt.id = start;
     agent.id='agent';
     graph.insertAdjacentElement("beforeend", startpt);
     graph.insertAdjacentElement("beforeend", agent);
@@ -78,8 +81,9 @@ function selectPath(path,verts,graph=document.querySelector("svg > g > g > g")){
     endpt.cy.baseVal.value = verts[path[path.length-1]].y;
     endpt.r.baseVal.value = '10';
     endpt.classList.add('gen');
-    endpt.id = 'endpt';
+    endpt.id = end;
     graph.insertAdjacentElement("beforeend", endpt);
+    updateAgent(true);
     return line;
 }
 
@@ -93,6 +97,8 @@ function refresh(){
     slider.value=0;
     let scroll = document.getElementById("scroll");
     scroll.scrollTo(0,0);
+    skipStart = function(){return true;};
+skipEnd = function(){return false;};
 }
 
 function focus(element,margin=5,svg=document.getElementById("svg")){
@@ -109,17 +115,23 @@ function updateAgent(follow=false,margin=300){
     if(agent){
     let slider = document.getElementById("progbar");
     let slidercompletion = slider.value/slider.max;
+    if(slidercompletion==1) {
+        this.onPathEnd();
+    }
+    else if(slidercompletion==0){
+        this.onPathStart();
+    }
     let path = document.querySelector("#graph > polyline");
     let svg = document.getElementById("svgraph");
     let point = path.getPointAtLength(slidercompletion*path.getTotalLength());
     agent.cx.baseVal.value = point.x;
     agent.cy.baseVal.value = point.y;
-    let nxtpt = path.getPointAtLength((slidercompletion+0.0001)*path.getTotalLength());
+    if(slidercompletion==1){
+        return;
+    }
+    let nxtpt = path.getPointAtLength((slidercompletion)*path.getTotalLength()+10);
     if(follow){
         focus(agent,margin);
-    }
-    if(nxtpt.x==point.x && nxtpt.y==point.y){
-        return;
     }
     let orientation= 270-(Math.atan2(nxtpt.y-point.y,nxtpt.x-point.x)*180/Math.PI);
     svg.setAttribute("style","transform-origin: "+point.x+"px "+point.y+"px; "+"transform: rotate("+orientation+"deg)");
