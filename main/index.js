@@ -1,9 +1,18 @@
 let scroll = document.getElementById("scroll");
-scroll.onscroll=function(){
+let slider = document.getElementById("progbar");
+
+let totalDistance;
+
+scroll.onscroll = function() {
+    updateSliderValue();
+};
+
+function updateSliderValue() {
     let slider = document.getElementById("progbar");
-    slider.value=(scroll.scrollTop/(scroll.scrollHeight-scroll.clientHeight))*slider.max;
+    slider.value = (scroll.scrollTop / (scroll.scrollHeight - scroll.clientHeight)) * slider.max;
     slider.oninput();
 }
+
 this.skipStart = function(){return true;};
 this.skipEnd = function(){return false;};
 let iterator = 1;
@@ -32,11 +41,13 @@ function markShortestPath(start,end){
     onPathStart=function(){};
     document.querySelector("#svgraph > g > image").href.baseVal="elements/mainfloorcrunched.png";
     let path = minPathBtwRooms(nextMatrix,distMatrix,start,end,rooms);
+    totalDistance = distMatrix[path[0]][path[path.length-1]];
     if(path[0]>76){
         document.querySelector("#svgraph > g > image").href.baseVal="elements/combscaled.png";
     }
     for(let i = 1; i < path.length; i++){
         if (distMatrix[path[i-1]][path[i]]>=10000) {
+            totalDistance-=distMatrix[path[i-1]][path[i]];
             let slider = document.getElementById("progbar");
             let scroll = document.getElementById("scroll");
             onPathStart=function(){
@@ -46,9 +57,6 @@ function markShortestPath(start,end){
                 skipEnd=function(){return false};
                 skipStart=function(){return true};
                 configureScroll(selectPath(path.slice(0,i),verts,undefined,"stairwell"),true);
-                slider.value=slider.max-2;
-                scroll.scrollTo(0,scroll.scrollHeight);
-                scroll.scrollBy(0,-2);
                 }
                 
             };
@@ -58,8 +66,6 @@ function markShortestPath(start,end){
                     flipImg();
                 skipStart=function(){return false};
                 skipEnd=function(){return true};
-                slider.value=1;
-                scroll.scrollTo(0,1);
                 configureScroll(selectPath(path.slice(i),verts,"stairwell"),true);
                 }
                 
@@ -80,6 +86,8 @@ function flipImg(){
 }
 function markShortestPathFromInput(zoom=false){
     refresh();
+    slider.value=0;
+    scroll.scrollTop=0;
     let start = document.getElementById("start").value;
     let end = document.getElementById("end").value;
     start = start.toUpperCase();
@@ -94,10 +102,9 @@ function configureScroll(path,zoom){
     }
     let scroll = document.getElementById("scroll");
     let size = document.getElementById("svg").width.baseVal.value;
+    size=size.toFixed(0);
     let slider = document.getElementById("progbar");
-    scroll.style.height = size+"px";
-    scroll.style.width = size+"px";
-    slider.max = Number(path.getTotalLength()+size-1).toFixed(0);
+    slider.max = totalDistance.toFixed(0);
     scroll.children[0].style.height = slider.max+"px";
 }
 function navSchedule(){

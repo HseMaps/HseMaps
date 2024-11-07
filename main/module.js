@@ -93,10 +93,6 @@ function refresh(){
         selected[i].remove();
         i--;
     }
-    let slider = document.getElementById("progbar");
-    slider.value=0;
-    let scroll = document.getElementById("scroll");
-    scroll.scrollTo(0,0);
     skipStart = function(){return true;};
 skipEnd = function(){return false;};
 }
@@ -110,26 +106,28 @@ function focus(element,margin=5,svg=document.getElementById("svg")){
     map.height = focus.height + margin;
 }
 
+let firstPathRendered = true;
+let secondPathRendered = false;
+
 function updateAgent(follow=false,margin=300){
     let agent = document.getElementById("agent");
+    let path = document.querySelector("#graph > polyline");
+    let dist = slider.value;
     if(agent){
     let slider = document.getElementById("progbar");
     let slidercompletion = slider.value/slider.max;
-    if(slidercompletion==1) {
-        this.onPathEnd();
+    if(secondPathRendered){
+        dist=-(totalDistance-slider.value-path.getTotalLength());
     }
-    else if(slidercompletion==0){
-        this.onPathStart();
-    }
-    let path = document.querySelector("#graph > polyline");
     let svg = document.getElementById("svgraph");
-    let point = path.getPointAtLength(slidercompletion*path.getTotalLength());
+    let point = path.getPointAtLength(dist);
     agent.cx.baseVal.value = point.x;
     agent.cy.baseVal.value = point.y;
     if(slidercompletion==1){
         return;
     }
-    let nxtpt = path.getPointAtLength((slidercompletion)*path.getTotalLength()+10);
+    let nxtpt = path.getPointAtLength(Number(dist)+10);
+    this.nptt = nxtpt;
     if(follow){
         focus(agent,margin);
     }
@@ -149,6 +147,18 @@ function updateAgent(follow=false,margin=300){
         color = [0, 255, 0];
     }
     agent.style.fill = "rgb("+color[0]+","+color[1]+","+color[2]+")";
+    if(slider.value>=path.getTotalLength() && firstPathRendered) {
+        this.onPathEnd();
+        firstPathRendered = false;
+        secondPathRendered = true;
+        return;
+    }
+    else if(slider.value<=totalDistance-path.getTotalLength() && secondPathRendered) {
+        this.onPathStart();
+        firstPathRendered = true;
+        secondPathRendered = false;
+        return;
+    }
     
 }
 }
