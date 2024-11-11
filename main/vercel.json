@@ -1,0 +1,14 @@
+{
+    "bui;ds": [
+        {
+            "src": "main/index.html",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/main/index.html"
+        }
+    ]
+}
