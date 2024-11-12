@@ -3,7 +3,24 @@ import { SVGCreator } from './SVGCreator.js';
 import { StateManager } from './StateManager.js';
 import { UtilityModule } from './UtilityModule.js';
 
+/**
+ * RenderingModule - Handles SVG element creation and manipulation
+ * Manages path visualization, agent movement, and viewport control
+ * 
+ * @module RenderingModule
+ */
 export const RenderingModule = {
+    /**
+     * Creates and appends SVG points and agent for path visualization
+     * @param {number[]} points - Array of vertex coordinates
+     * @param {object} graph - SVG graph container element
+     * @returns {SVGPolylineElement} Created path line element
+     * 
+     * @example
+     * // Given vertices at [(100,100), (200,200)]
+     * createLine([[100,100], [200,200]], graphElement)
+     * // Creates: <polyline points="100,100 200,200" class="line gen"/>
+     */
     createLine(points, graph = document.querySelector("svg > g > g > g")) {
         const path = SVGCreator.createElement('polyline', {
             points,
@@ -47,6 +64,24 @@ export const RenderingModule = {
         return line;
     },
 
+    /**
+     * Updates viewport focus to center on specified element
+     * @param {SVGElement} element - Element to focus on
+     * @param {number} margin - Padding around focused element
+     * @param {SVGSVGElement} svg - SVG container element
+     * 
+     * @example
+     * // Given:
+     * element = <circle cx="150" cy="150" r="10"/>
+     * margin = 20
+     * 
+     * focus(element, 20)
+     * // Results in viewBox:
+     * // x = 140 (150 - 20/2)
+     * // y = 140 (150 - 20/2)
+     * // width = element.width + 20
+     * // height = element.height + 20
+     */
     focus(element, margin = 5, svg = document.getElementById("svg")) {
         const map = svg.viewBox.baseVal;
         const focus = element.getBBox();
@@ -56,6 +91,20 @@ export const RenderingModule = {
         map.height = focus.height + margin;
     },
 
+    /**
+     * Clears current path visualization and resets navigation state
+     * Removes all generated elements and resets transition flags
+     * 
+     * @example
+     * // Before:
+     * // <polyline class="gen"/>
+     * // <circle class="gen"/>
+     * refresh()
+     * // After:
+     * // - All elements with class "gen" removed
+     * // - skipStart = true
+     * // - skipEnd = false
+     */
     refresh() {
         const selected = document.getElementsByClassName("gen");
         Array.from(selected).forEach(el => el.remove());
