@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <script src="module.js"></script>
         <script src="devTesting.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,30 +31,28 @@
           <input type="text" id="start" placeholder="Start">
           <input type="text" id="end" placeholder="Destination">
         </div>
-        <button onclick="markShortestPathFromInput(true)">Route</button>
+        <button onclick="markShortestPathFromInput()">Route</button>
       </div>
       
       
 
       <div id="svgdiv">
         <div id="scroll"><div></div></div>
-        <svg id="svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1308 2048">
+        <svg id="svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 0 0">
           <g>
           <g id="svgraph">
-            <g xmlns="http://www.w3.org/2000/svg" style="mask: url('#pathObjID');"><image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="1307" preserveAspectRatio="none" xlink:href="elements/mainfloorcrunched.png"></image>
-        <mask id="pathObjID"></mask>
+            <g xmlns="http://www.w3.org/2000/svg"><image xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="1307" preserveAspectRatio="none" xlink:href="elements/mainfloorcrunched.png"></image>
         <g id="graph"></g></g>
       </g>
           </g>
       </svg>
-        <div id="mask"></div>
       </div>
-      <input type="range" min="0" max="200" value="0" style="width: 100%;" id="progbar" oninput="updateAgent(true)">
-      <input type="text" id="sched">
-      <input type="button" onclick="navSchedule()" value="Schedule">
+      <input title="Progress" type="range" min="0" max="200" value="0" id="progbar">
+      <input title="Schedule" type="text" id="sched">
+      <input type="button" onclick="window.navSchedule()" value="Schedule">
 
     </body>
-    <script src="index.js"></script>
+    <script type="module" src="./index.js"></script>
 
 </html>
 <!-- /Users/PRICETUR000/HseMaps/main/index.html -->

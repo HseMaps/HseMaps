@@ -63,10 +63,10 @@ svg {
   padding: 0.25em;
 }
 
-html{
+html {
   overflow-x: hidden;
 }
-#scroll{
+#scroll {
   overflow: auto;
   position: absolute;
   height: 0px;
@@ -80,4 +80,7 @@ html{
   fill: #FFFF00;
   stroke: #740000;
   stroke-width: 0.2em;
+}
+#progbar{
+  width: 100%;
 }
