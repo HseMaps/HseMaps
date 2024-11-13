@@ -92,7 +92,6 @@ export const StartModule = {
         console.log("Not HSE email");
         return false;
     },
-
     /**
      * Validates the password input by checking it against a list of valid passwords.
      * 
