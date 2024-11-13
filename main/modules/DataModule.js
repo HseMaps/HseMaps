@@ -79,6 +79,7 @@ export const DataModule = (function() {
     }
 
     return {
+        fetchJSON,
         initialize,
         get: () => data
     };

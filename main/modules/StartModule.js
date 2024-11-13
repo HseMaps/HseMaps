@@ -1,14 +1,41 @@
-//Login Function
-function checkLogin() {
+import { DataModule } from './DataModule.js';
+import { DOMCache } from './DOMCache.js';
+import { Config } from '../config/config.js';``
+
+        Object.assign(window, {
+            fetchJSON: DataModule.fetchJSON
+        });
+
+
+let emails = [];
+fetchJSON('elements/ValidEmails.json').then(data => {
+    emails = data;
+});
+
+let passwords = [];
+fetchJSON('elements/ValidPasswords.json').then(data => {
+  passwords = data;
+});
+
+let ip;
+fetchJSON("https://api.ipify.org?format=json").then(data => {
+    ip = data.ip;
+});
+
+// StartModule - Manages login validation and redirection
+export const StartModule = {
+ //Login Function
+checkLogin() {
      if(checkEmail() && checkIP() && checkPassword()){
         window.location.href = "index.html";
         console.log('redirected');
      };
-};
+},
 
 //Function to validate Email
-function checkEmail() {
-    var email = document.getElementById("email").value;
+checkEmail() {
+
+    var email = DOMCache[Config.LOG.SELECTORS.EMAIL].value;
     let source;
     let valid = false;
     for(let i =0; i < email.length; i++){
@@ -28,12 +55,12 @@ function checkEmail() {
     };
     console.log("Not HSE email");
     return false;
-}
+},
 
 
 //Function to validate password
-function checkPassword() {
-    var password = document.getElementById("password").value;
+checkPassword() {
+    var password = DOMCache[Config.LOG.SELECTORS.PASSWORD].value;
     let valid = false;
     for(let i = 0; i < passwords.length; i++){
         if(password === passwords[i]){
@@ -42,36 +69,16 @@ function checkPassword() {
         }
     }
     return valid;
-};
+},
 
 
 //Function to validate IP address
-function checkIP() {
+checkIP() {
     if(ip === "209.160.198.202") {
         return true;
     }
     return false;
+}
+
+
 };
-
-
-//Function connected to retry button which redirects to log.html if IP address is correct
-function retry() {
-  if(checkIP()){
-    console.log('true redirect');
-    window.location.href = "log.html";
-  }
-};
-
-let emails = [];
-fetchJSON('elements/ValidEmails.json').then(data => {
-    emails = data;
-});
-let passwords = [];
-fetchJSON('elements/ValidPasswords.json').then(data => {
-  passwords = data;
-});
-
-let ip;
-fetchJSON("https://api.ipify.org?format=json").then(data => {
-    ip = data.ip;
-});

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
  <html lang="en">
     <head> 
-       <script src="module.js"></script>
-       <script src="start.js"></script>
+      <script type="module" src="./index.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="logstyle.css">
@@ -25,18 +24,22 @@
         <input title="email" type="text" id="email">
         </h3>
           <script>
-            document.addEventListener("DOMContentLoaded", function() {
-              if(!checkIP()) {
-                windows.location.href = "start.html";
-              }
-            });
+            // document.addEventListener("DOMContentLoaded", function() {
+            //   console.log(checkIP());
+            //   if((checkIP())) {
+            //     window.location.href = "start.html";
+            //     console.log("redirected");
+            //   } else {
+            //     console.log("not redirected");
+            //   }
+            // }); (NOT CURRENTLY WORKING)
           </script>
         <h3>
             Password
         <input title="password" type="password" id="password">
         </h3>
         <div class="container">
-          <button onclick="checkLogin()">login</button>
+          <button id="submit" onclick="checkLogin()">login</button>
         </div>
     </body>
  </html>

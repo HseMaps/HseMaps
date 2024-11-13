@@ -1,8 +1,8 @@
 <!DOCTYPE html>
  <html lang="en">
     <head> 
-        <script src="module.js"></script>
-        <script src="start.js"></script>
+        <script type="module" src="./index.js"></script>
+        <script src="devTesting.js"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="startstyle.css">
@@ -16,6 +16,16 @@
             <span style="vertical-align:middle">HSE MAPS</span>
           </div>
         </div>
+        <script>
+          function retry() {
+            if(window.checkIP()) {
+              window.location.href = "log.html";
+              console.log("redirected");
+            } else {
+              console.log("not redirected");
+            }
+          } 
+        </script>
       </h1>
          <h2>ACCESS DENIED</h2>
          <p>Please connect to the HSE Wifi to proceed</p>
