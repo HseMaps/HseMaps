@@ -61,6 +61,11 @@ export const UtilityModule = {
             const sliderValue = progbar.value;
             const sliderCompletion = sliderValue / progbar.max;
             
+            const distanceDomain = StateManager.get('distanceDomain');
+            const currentPathSegment = distanceDomain.findIndex((e,i) => 
+                sliderValue >= distanceDomain[i] && sliderValue < (distanceDomain[i + 1] || Infinity)
+            );
+            StateManager.set('currentPathSegment', currentPathSegment);
             // Calculate distance based on floor
             const dist = StateManager.get('secondPathRendered')
                 ? -(StateManager.get('totalDistance') - sliderValue - path.getTotalLength())
@@ -152,9 +157,25 @@ export const UtilityModule = {
         const { nextMatrix, distMatrix, rooms, verts } = DataModule.get();
         const path = PathfindingModule.minPathBtwRooms(nextMatrix, distMatrix, start, end, rooms);
         StateManager.set('totalDistance', distMatrix[path[0]][path[path.length - 1]]);
+        StateManager.set('path', path);
+
+        // Recalculate distance domain to handle stairwells smoothly
+        const distanceDomain = [];
+        let accumulatedDist = 0;
         
-        for (let i = 1; i < path.length; i++) {
-            if (distMatrix[path[i - 1]][path[i]] >= Config.THRESHOLD.STAIR_DISTANCE) {
+        for (let i = 0; i < path.length; i++) {
+            distanceDomain[i] = accumulatedDist;
+            if (i < path.length - 1 && distMatrix[path[i]][path[i + 1]] < Config.THRESHOLD.STAIR_DISTANCE) {
+                let segmentDist = distMatrix[path[i]][path[i + 1]];
+                // Don't subtract stair distance, just use actual segment length
+                accumulatedDist += segmentDist;
+            }
+        }
+        
+        StateManager.set('distanceDomain', distanceDomain);
+
+        for (let i = 0; i < path.length-1; i++) {
+            if (path[i] > Config.THRESHOLD.FLOOR_CHANGE && path[i+1] > Config.THRESHOLD.FLOOR_CHANGE) {
                 this.handleStairTransition(path, i, distMatrix, verts);
                 return RenderingModule.selectPath(path.slice(0, i), verts, undefined, "stairwell");
             }
@@ -209,7 +230,6 @@ export const UtilityModule = {
      * // - Configures scroll for new path
      */
     handleStairTransition(path, index, distMatrix, verts) {
-        // Adjust total distance by removing stair transition length
         StateManager.set('totalDistance', 
             StateManager.get('totalDistance') - distMatrix[path[index - 1]][path[index]]
         );
@@ -220,8 +240,10 @@ export const UtilityModule = {
                 RenderingModule.refresh();
                 StateManager.set('skipEnd', () => false);
                 StateManager.set('skipStart', () => true);
+                
+                // Use path segment to determine first floor section
                 RenderingModule.selectPath(
-                    path.slice(0, index),  // First floor segment
+                    path.slice(0, index),
                     verts, 
                     undefined, 
                     "stairwell"
@@ -236,8 +258,9 @@ export const UtilityModule = {
                 RenderingModule.refresh();
                 StateManager.set('skipStart', () => false);
                 StateManager.set('skipEnd', () => true);
+            
                 RenderingModule.selectPath(
-                    path.slice(index),     // Second floor segment
+                    path.slice(index),
                     verts,
                     "stairwell"
                 );

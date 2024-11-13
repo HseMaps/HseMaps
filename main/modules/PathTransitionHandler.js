@@ -4,6 +4,7 @@
  * 
  * @module PathTransitionHandler
  */
+import { Config } from '../config/config.js';
 import { StateManager } from './StateManager.js';
 
 export const PathTransitionHandler = {
@@ -58,26 +59,27 @@ export const PathTransitionHandler = {
         // Guard against recursive calls during state updates
         if (this.isTransitioning) return false;
         
-        const pathLength = path.getTotalLength();
-        const { get, set } = StateManager;
-        
         try {
             this.isTransitioning = true;
+            const currentSegment = StateManager.get('currentPathSegment');
+            const fullPath = StateManager.get('path');
+            
 
-            // Check for transition to second floor
-            if (sliderValue >= pathLength && get('firstPathRendered')) {
-                set('firstPathRendered', false);
-                set('secondPathRendered', true);
-                const onPathEnd = get('onPathEnd');
+            
+            if (fullPath[currentSegment] > Config.THRESHOLD.FLOOR_CHANGE && 
+                StateManager.get('firstPathRendered')) {
+                StateManager.set('firstPathRendered', false);
+                StateManager.set('secondPathRendered', true);
+                const onPathEnd = StateManager.get('onPathEnd');
                 if (onPathEnd) onPathEnd();
                 return true;
             }
             
             // Check for transition back to first floor
-            if (sliderValue <= totalDistance - pathLength && get('secondPathRendered')) {
-                set('firstPathRendered', true);
-                set('secondPathRendered', false);
-                const onPathStart = get('onPathStart');
+            if (fullPath[currentSegment] <= Config.THRESHOLD.FLOOR_CHANGE && StateManager.get('secondPathRendered')) {
+                StateManager.set('firstPathRendered', true);
+                StateManager.set('secondPathRendered', false);
+                const onPathStart = StateManager.get('onPathStart');
                 if (onPathStart) onPathStart();
                 return true;
             }

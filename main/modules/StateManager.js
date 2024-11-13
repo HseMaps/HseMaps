@@ -19,6 +19,9 @@ export const StateManager = (() => {
      * @property {Function} onPathStart - Callback for first floor transition
      * @property {Function} onPathEnd - Callback for second floor transition
      * @property {number} iterator - Current position in navigation sequence
+     * @property {Array} path - Array to store the path
+     * @property {Array} distanceDomain - Array to store the distance domain
+     * @property {Object|null} currentPathSegment - Current path segment
      * 
      * @example State structure
      * state = {
@@ -30,7 +33,10 @@ export const StateManager = (() => {
      *   skipEnd: () => false,    // Show end point
      *   onPathStart: () => {},   // Floor transition callback
      *   onPathEnd: () => {},     // Floor transition callback
-     *   iterator: 1              // First waypoint
+     *   iterator: 1,             // First waypoint
+     *   path: [],                // Path array
+     *   distanceDomain: [],      // Distance domain array
+     *   currentPathSegment: null // Current path segment
      * }
      */
     const state = new Proxy({
@@ -42,7 +48,10 @@ export const StateManager = (() => {
         skipEnd: () => false,
         onPathStart: () => {},
         onPathEnd: () => {},
-        iterator: 1
+        iterator: 1,
+        path: [],
+        distanceDomain: [],
+        currentPathSegment: null
     }, {
         /**
          * Proxy trap for state updates
