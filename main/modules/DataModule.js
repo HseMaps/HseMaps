@@ -25,7 +25,8 @@ export const DataModule = (function() {
         distMatrix: [],
         nextMatrix: [],
         rooms: [],
-        verts: []
+        verts: [],
+        imgs: []
     };
 
     /**
@@ -64,14 +65,15 @@ export const DataModule = (function() {
      */
     async function initialize() {
         try {
-            const [distMatrix, nextMatrix, rooms, verts] = await Promise.all([
+            const [distMatrix, nextMatrix, rooms, verts, imgs] = await Promise.all([
                 fetchJSON('elements/DistanceMatrix.json'),
                 fetchJSON('elements/PrecomputedPaths.json'),
                 fetchJSON('elements/SLAVEWORK.json').then(flipKeyValuePairWithMultiNodes),
-                fetchJSON('elements/Vertices.json')
+                fetchJSON('elements/Vertices.json'),
+                fetchJSON('elements/StreetView.json')
             ]);
             
-            Object.assign(data, { distMatrix, nextMatrix, rooms, verts });
+            Object.assign(data, { distMatrix, nextMatrix, rooms, verts, imgs });
         } catch (error) {
             console.error('Initialization failed:', error);
             throw error;

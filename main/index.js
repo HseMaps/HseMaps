@@ -1,5 +1,6 @@
 import { DataModule } from './modules/DataModule.js';
 import { EventHandlingModule } from './modules/EventHandlingModule.js';
+import { StreetViewModule } from './modules/StreetViewModule.js';
 import { UtilityModule } from './modules/UtilityModule.js';
 
 // Initialize application
@@ -11,7 +12,8 @@ import { UtilityModule } from './modules/UtilityModule.js';
         Object.assign(window, {
             markShortestPathFromInput: EventHandlingModule.markShortestPathFromInput,
             navSchedule: EventHandlingModule.navSchedule,
-            updateAgent: UtilityModule.updateAgent
+            updateAgent: UtilityModule.updateAgent,
+            getImg: StreetViewModule.getImg
         });
         
         window.addEventListener('resize', UtilityModule.configureScroll);
