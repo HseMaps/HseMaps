@@ -18,5 +18,15 @@ export const Config = {
         FLOOR_CHANGE: 76,
         STAIR_DISTANCE: 10000
     },
-    DEFAULTS: { MARGIN: 300 }
+    DEFAULTS: { MARGIN: 300 },
+    LOG: {
+        SELECTORS: {
+            EMAIL: '#email',
+            PASSWORD: '#password',
+            RETRY: '#retry',
+            SUBMIT: '#submit'
+        },
+        VALID_EMAILS: 'elements/ValidEmails.json',
+        VALID_PASSWORDS: 'elements/ValidPasswords.json'
+    }
 };
